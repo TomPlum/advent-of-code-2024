@@ -14,4 +14,11 @@ class ListParserTest {
         val distance = parser.calculateDistance()
         assertThat(distance).isEqualTo(11)
     }
+
+    @Test
+    fun examplePartTwo() {
+        val parser = ListParser(input.value)
+        val distance = parser.calculateSimilarityScore()
+        assertThat(distance).isEqualTo(31)
+    }
 }
