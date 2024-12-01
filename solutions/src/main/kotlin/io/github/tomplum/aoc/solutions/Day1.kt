@@ -15,6 +15,6 @@ class Day1 : Solution<Int, Int> {
     }
 
     override fun part2(): Int {
-        return listParser.calculateDistance()
+        return listParser.calculateSimilarityScore()
     }
 }
