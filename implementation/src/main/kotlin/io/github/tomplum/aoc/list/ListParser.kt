@@ -18,6 +18,8 @@ class ListParser(private val list: List<String>) {
      *  [1, 8, 3]
      *  [5, 2, 7]
      *
+     *  TODO: Consume from library once released
+     *
      * @param parse A lambda that takes a string and returns a Pair of values (T, U) if parsing is successful.
      * @return Two lists of values from the vertical representation in the string collection.
      */
