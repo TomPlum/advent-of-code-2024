@@ -54,7 +54,7 @@ tests in the `common`, `implementation` and `solutions` Gradle sub-projects as w
 | Day | Part 1 Answer | Avg Time | Part 2 Answer | Avg Time | Documentation                       |
 |-----|---------------|----------|---------------|----------|-------------------------------------|
 | 01  | 2086478       | 11ms     | 24941624      | 180ms    | [Historian Hysteria](docs/DAY01.MD) |
-| 02  | -             | -        | -             | -        | [](docs/DAY02.MD)                   |
+| 02  | 442           | 11ms     | 493           | 14ms     | [Red-Nosed Reports](docs/DAY02.MD)  |
 | 03  | -             | -        | -             | -        | [](docs/DAY03.MD)                   |
 | 04  | -             | -        | -             | -        | [](docs/DAY04.MD)                   |
 | 05  | -             | -        | -             | -        | [](docs/DAY05.MD)                   |
