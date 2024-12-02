@@ -5,9 +5,17 @@ import assertk.assertions.isEqualTo
 import org.junit.jupiter.api.Test
 
 class Day2Test {
+    private val solution = Day2()
+
     @Test
     fun partOne() {
-        val solution = Day2().part1()
-        assertThat(solution).isEqualTo(442)
+        val safeReports = solution.part1()
+        assertThat(safeReports).isEqualTo(442)
+    }
+
+    @Test
+    fun partTwo() {
+        val safeReports = solution.part2()
+        assertThat(safeReports).isEqualTo(493)
     }
 }

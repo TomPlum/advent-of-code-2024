@@ -12,4 +12,8 @@ class Day2 : Solution<Int, Int> {
     override fun part1(): Int {
         return reportAnalyser.getSafeReports().count()
     }
+
+    override fun part2(): Int {
+        return reportAnalyser.getSafeReportsWithProblemDampener().count()
+    }
 }
