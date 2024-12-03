@@ -9,7 +9,7 @@ class ComputerTest {
     @Test
     fun examplePartOne() {
         val input = TestInputReader.read<String>("/day3/example.txt")
-        val scanner = Computer()
+        val scanner = Computer(BasicInstructionSet())
         val result = scanner.runProgram(input.asSingleString())
         assertThat(result).isEqualTo(161)
     }
@@ -17,7 +17,7 @@ class ComputerTest {
     @Test
     fun examplePartTwo() {
         val input = TestInputReader.read<String>("/day3/example-2.txt")
-        val scanner = Computer()
+        val scanner = Computer(ConditionalInstructionSet())
         val result = scanner.runProgram(input.asSingleString())
         assertThat(result).isEqualTo(48)
     }
