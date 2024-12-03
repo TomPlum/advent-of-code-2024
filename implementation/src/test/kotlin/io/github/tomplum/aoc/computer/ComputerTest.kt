@@ -13,4 +13,12 @@ class ComputerTest {
         val result = scanner.runProgram(input.asSingleString())
         assertThat(result).isEqualTo(161)
     }
+
+    @Test
+    fun examplePartTwo() {
+        val input = TestInputReader.read<String>("/day3/example-2.txt")
+        val scanner = Computer()
+        val result = scanner.runProgram(input.asSingleString())
+        assertThat(result).isEqualTo(48)
+    }
 }
