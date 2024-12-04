@@ -12,4 +12,11 @@ class WordSearchTest {
         val wordSearch = WordSearch(input.value)
         assertThat(wordSearch.getXmasOccurrences()).isEqualTo(18)
     }
+
+    @Test
+    fun partTwoExample() {
+        val input = TestInputReader.read<String>("/day4/example.txt")
+        val wordSearch = WordSearch(input.value)
+        assertThat(wordSearch.getMasXOccurrences()).isEqualTo(9)
+    }
 }

@@ -28,6 +28,13 @@ class WordSearch(data: List<String>): AdventMap2D<WordSearchTile>() {
         }
     }
 
+    fun getMasXOccurrences(): Int {
+        val startingTiles = filterTiles { tile -> tile.value == 'A' }
+        return startingTiles.keys.sumOf { position ->
+            findMasCross(position)
+        }
+    }
+
     private fun findXmasWord(position: Point2D, currentWord: String = "X", matches: Int = 0, direction: Direction? = null): Int {
         if (currentWord == "XMAS") {
             return matches + 1
@@ -42,9 +49,16 @@ class WordSearch(data: List<String>): AdventMap2D<WordSearchTile>() {
 
         return adjacentTiles(setOf(position), WordSearchTile('.'))
             .filter { (candidatePos, tile) ->
+                // If we have no direction then we must
+                // be at X looking for M, so we don't care about
+                // the direction as there could be many MAS instances
+                // from the current starting X value.
                 if (direction == null) {
                     tile?.value == targetValue
                 } else {
+                    // If we have a direction then we're at least at XM
+                    // so we've already started looking into a direction
+                    // and must continue until we finish XMAS, or it fails.
                     val candidateDirection = position.directionTo(candidatePos as Point2D).first!!
                     tile?.value == targetValue && candidateDirection == direction
                 }
@@ -55,10 +69,17 @@ class WordSearch(data: List<String>): AdventMap2D<WordSearchTile>() {
             }
     }
 
+    private fun findMasCross(position: Point2D): Int {
+        val candidates = position.diagonallyAdjacent()
+        val sValid = candidates.count { getTile(it, WordSearchTile('.')).value == 'S' } == 2
+        val mValid = candidates.count { getTile(it, WordSearchTile('.')).value == 'M' } == 2
+        return if (sValid && mValid) 1 else 0
+    }
+
     /**
      * TODO: Consume from lib once published.
      */
-    fun Point2D.directionTo(other: Point2D): Pair<Direction?, Point2D> {
+    private fun Point2D.directionTo(other: Point2D): Pair<Direction?, Point2D> {
         val xDelta = other.x - x
         val yDelta = other.y - y
         val distance = Point2D(abs(xDelta), abs(yDelta))
@@ -76,5 +97,17 @@ class WordSearch(data: List<String>): AdventMap2D<WordSearchTile>() {
         }.let { direction ->
             Pair(direction, distance)
         }
+    }
+
+    /**
+     * TODO: Consume from lib once published.
+     */
+    private fun Point2D.diagonallyAdjacent(): List<Point2D> {
+        return listOf(
+            this.shift(Direction.TOP_RIGHT),
+            this.shift(Direction.BOTTOM_RIGHT),
+            this.shift(Direction.BOTTOM_LEFT),
+            this.shift(Direction.TOP_LEFT)
+        )
     }
 }
