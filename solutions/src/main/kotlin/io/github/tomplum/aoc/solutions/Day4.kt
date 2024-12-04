@@ -12,4 +12,8 @@ class Day4: Solution<Int, Int> {
     override fun part1(): Int {
         return wordSearch.getXmasOccurrences()
     }
+
+    override fun part2(): Int {
+        return wordSearch.getMasXOccurrences()
+    }
 }

@@ -30,8 +30,8 @@ class WordSearch(data: List<String>): AdventMap2D<WordSearchTile>() {
 
     fun getMasXOccurrences(): Int {
         val startingTiles = filterTiles { tile -> tile.value == 'A' }
-        return startingTiles.keys.sumOf { position ->
-            findMasCross(position)
+        return startingTiles.keys.count { position ->
+            isValidCrossCenter(position)
         }
     }
 
@@ -69,11 +69,24 @@ class WordSearch(data: List<String>): AdventMap2D<WordSearchTile>() {
             }
     }
 
-    private fun findMasCross(position: Point2D): Int {
+    private fun isValidCrossCenter(position: Point2D): Boolean {
         val candidates = position.diagonallyAdjacent()
+        val topRight = position.shift(Direction.TOP_RIGHT)
+        val bottomRight = position.shift(Direction.BOTTOM_RIGHT)
+        val bottomLeft = position.shift(Direction.BOTTOM_LEFT)
+        val topLeft = position.shift(Direction.TOP_LEFT)
+
         val sValid = candidates.count { getTile(it, WordSearchTile('.')).value == 'S' } == 2
         val mValid = candidates.count { getTile(it, WordSearchTile('.')).value == 'M' } == 2
-        return if (sValid && mValid) 1 else 0
+
+        if (!sValid || !mValid) {
+            return false
+        }
+
+        val bottomTopWordInvalid = getTile(topRight, WordSearchTile('.')).value == getTile(bottomLeft, WordSearchTile('.')).value
+        val topBottomWordInvalid = getTile(topLeft, WordSearchTile('.')).value == getTile(bottomRight, WordSearchTile('.')).value
+
+        return !(bottomTopWordInvalid || topBottomWordInvalid)
     }
 
     /**
