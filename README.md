@@ -1,6 +1,6 @@
 # :christmas_tree: Advent of Code 2024
 
-![GitHub](https://img.shields.io/badge/stars-04%2F50-yellow)
+![GitHub](https://img.shields.io/badge/stars-08%2F50-yellow)
 
 ## What is Advent of Code?
 
@@ -48,7 +48,7 @@ tests in the `common`, `implementation` and `solutions` Gradle sub-projects as w
 | 01  | 2086478       | 11ms     | 24941624      | 180ms    | [Historian Hysteria](docs/DAY01.MD) |
 | 02  | 442           | 11ms     | 493           | 14ms     | [Red-Nosed Reports](docs/DAY02.MD)  |
 | 03  | 179571322     | 5ms      | 103811193     | 2ms      | [Mull It Over](docs/DAY03.MD)       |
-| 04  | -             | -        | -             | -        | [](docs/DAY04.MD)                   |
+| 04  | 2493          | 39ms     | 1890          | 8ms      | [Ceres Search](docs/DAY04.MD)       |
 | 05  | -             | -        | -             | -        | [](docs/DAY05.MD)                   |
 | 06  | -             | -        | -             | -        | [](docs/DAY06.MD)                   |
 | 07  | -             | -        | -             | -        | [](docs/DAY07.MD)                   |
