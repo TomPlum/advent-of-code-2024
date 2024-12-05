@@ -12,4 +12,8 @@ class Day5: Solution<Int, Int> {
     override fun part1(): Int {
         return printQueue.analyse()
     }
+
+    override fun part2(): Int {
+        return printQueue.orderAnalyse()
+    }
 }
