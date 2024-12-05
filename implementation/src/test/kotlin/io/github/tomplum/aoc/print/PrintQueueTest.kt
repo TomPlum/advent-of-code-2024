@@ -12,4 +12,11 @@ class PrintQueueTest {
         val printQueue = PrintQueue(data.value)
         assertThat(printQueue.analyse()).isEqualTo(143)
     }
+
+    @Test
+    fun partTwoExample() {
+        val data = TestInputReader.read<String>("/day5/example.txt")
+        val printQueue = PrintQueue(data.value)
+        assertThat(printQueue.orderAnalyse()).isEqualTo(123)
+    }
 }
