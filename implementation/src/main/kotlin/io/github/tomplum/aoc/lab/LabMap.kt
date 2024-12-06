@@ -74,14 +74,15 @@ class LabMap(data: List<String>): AdventMap2D<LabTile>() {
                 val guardLeavingLab = isGuardLeavingLab(guardPosition, guardDirection)
 
                 while (!guardLeavingLab) {
-                    if (guardStatesSeen.contains("$guardPosition$guardDirection")) {
+                    val guardState = "$guardPosition$guardDirection"
+
+                    if (guardStatesSeen.contains(guardState)) {
                         // If we've seen this state before, we're in a time loop
                         timeLoopsSeen++
                         break
                     }
 
-                    guardStatesSeen.add("$guardPosition$guardDirection")
-//                    addTile(guardPosition, LabTile('O'))
+                    guardStatesSeen.add(guardState)
 
                     val posInFrontOfGuard = guardPosition.shift(guardDirection)
                     val tileInFrontOfGuard = getTile(posInFrontOfGuard)
