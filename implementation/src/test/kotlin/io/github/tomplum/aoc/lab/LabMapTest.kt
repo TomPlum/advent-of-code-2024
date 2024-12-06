@@ -10,6 +10,13 @@ class LabMapTest {
     fun partOneExample() {
         val input = TestInputReader.read<String>("/day6/example.txt")
         val labMap = LabMap(input.value)
-        assertThat(labMap.simulateGuardPatrol()).isEqualTo(41)
+        assertThat(labMap.simulateGuardPatrol().size).isEqualTo(41)
+    }
+
+    @Test
+    fun partTwoExample() {
+        val input = TestInputReader.read<String>("/day6/example.txt")
+        val labMap = LabMap(input.value)
+        assertThat(labMap.simulateGuardPatrolTimeLoops()).isEqualTo(6)
     }
 }

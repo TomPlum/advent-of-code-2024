@@ -32,7 +32,7 @@ class LabMap(data: List<String>): AdventMap2D<LabTile>() {
         yMax = yMax()!!
     }
 
-    fun simulateGuardPatrol(): Int {
+    fun simulateGuardPatrol(): List<Point2D> {
         val guardStart = filterTiles { it.isGuard() }.entries.first()
         var guardPosition = guardStart.key
         var guardDirection = guardStart.value.guardDirection()
@@ -52,7 +52,57 @@ class LabMap(data: List<String>): AdventMap2D<LabTile>() {
 
         }
 
-        return tilesSeen.distinct().size
+        return tilesSeen.distinct()
+    }
+
+    fun simulateGuardPatrolTimeLoops(): Int{
+        val guardStart = filterTiles { it.isGuard() }.entries.first()
+
+        var guardPosition = guardStart.key
+        var guardDirection = guardStart.value.guardDirection()
+
+        val guardPatrolPathPositions = simulateGuardPatrol().filterNot { it == guardStart.key }
+
+        val guardStatesSeen = mutableListOf<String>()
+        var timeLoopsSeen = 0
+
+        guardPatrolPathPositions.forEach { guardPatrolPathPosition ->
+            // Add an obstruction to the position on the guards path
+            addTile(guardPatrolPathPosition, LabTile('#'))
+
+            try {
+                val guardLeavingLab = isGuardLeavingLab(guardPosition, guardDirection)
+
+                while (!guardLeavingLab) {
+                    if (guardStatesSeen.contains("$guardPosition$guardDirection")) {
+                        // If we've seen this state before, we're in a time loop
+                        timeLoopsSeen++
+                        break
+                    }
+
+                    guardStatesSeen.add("$guardPosition$guardDirection")
+//                    addTile(guardPosition, LabTile('O'))
+
+                    val posInFrontOfGuard = guardPosition.shift(guardDirection)
+                    val tileInFrontOfGuard = getTile(posInFrontOfGuard)
+
+                    if (tileInFrontOfGuard.isObstruction()) {
+                        guardDirection = guardDirection.rotate(270)
+                    } else {
+                        guardPosition = guardPosition.shift(guardDirection)
+                    }
+                }
+            } catch (e: IllegalArgumentException) {
+                // We've gone off the map, so this has not created a loop
+            }
+
+            guardPosition = guardStart.key
+            guardDirection = guardStart.value.guardDirection()
+            guardStatesSeen.clear()
+            addTile(guardPatrolPathPosition, LabTile('.'))
+        }
+
+        return timeLoopsSeen
     }
 
     private fun isGuardLeavingLab(position: Point2D, direction: Direction): Boolean {

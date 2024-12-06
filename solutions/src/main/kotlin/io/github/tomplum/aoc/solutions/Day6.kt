@@ -10,6 +10,6 @@ class Day6: Solution<Int, Int> {
     private val labMap = LabMap(input)
 
     override fun part1(): Int {
-        return labMap.simulateGuardPatrol()
+        return labMap.simulateGuardPatrol().size
     }
 }
