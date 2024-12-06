@@ -12,4 +12,8 @@ class Day6: Solution<Int, Int> {
     override fun part1(): Int {
         return labMap.simulateGuardPatrol().size
     }
+
+    override fun part2(): Int {
+        return labMap.simulateGuardPatrolTimeLoops()
+    }
 }
