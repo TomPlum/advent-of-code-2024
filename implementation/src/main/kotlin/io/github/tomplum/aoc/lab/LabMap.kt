@@ -63,18 +63,21 @@ class LabMap(data: List<String>): AdventMap2D<LabTile>() {
 
         val guardPatrolPathPositions = simulateGuardPatrol().filterNot { it == guardStart.key }
 
-        val guardStatesSeen = mutableListOf<String>()
+        val guardStatesSeen = mutableSetOf<Pair<Point2D, Direction>>()
         var timeLoopsSeen = 0
+
+        val traversableLabTile = LabTile('.')
+        val obstruction = LabTile('#')
 
         guardPatrolPathPositions.forEach { guardPatrolPathPosition ->
             // Add an obstruction to the position on the guards path
-            addTile(guardPatrolPathPosition, LabTile('#'))
+            addTile(guardPatrolPathPosition, obstruction)
 
             try {
                 val guardLeavingLab = isGuardLeavingLab(guardPosition, guardDirection)
 
                 while (!guardLeavingLab) {
-                    val guardState = "$guardPosition$guardDirection"
+                    val guardState = Pair(guardPosition, guardDirection)
 
                     if (guardStatesSeen.contains(guardState)) {
                         // If we've seen this state before, we're in a time loop
@@ -100,7 +103,7 @@ class LabMap(data: List<String>): AdventMap2D<LabTile>() {
             guardPosition = guardStart.key
             guardDirection = guardStart.value.guardDirection()
             guardStatesSeen.clear()
-            addTile(guardPatrolPathPosition, LabTile('.'))
+            addTile(guardPatrolPathPosition, traversableLabTile)
         }
 
         return timeLoopsSeen
