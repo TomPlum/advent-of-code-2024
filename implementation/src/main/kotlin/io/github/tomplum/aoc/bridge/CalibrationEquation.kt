@@ -19,7 +19,12 @@ data class CalibrationEquation(private val equation: String) {
         return operations.flatMap { operation ->
             val workingValue = operation.apply(first, second)
             val newNumbers = mutableListOf(workingValue) + numbers
-            findResultPermutations(newNumbers.toMutableList(), operations)
+
+            if (workingValue <= testValue) {
+                findResultPermutations(newNumbers.toMutableList(), operations)
+            } else {
+                emptyList()
+            }
         }
     }
 }
