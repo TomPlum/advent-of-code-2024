@@ -12,4 +12,11 @@ class RopeBridgeSchematicsTest {
         val ropeBridgeSchematics = RopeBridgeSchematics(input.value)
         assertThat(ropeBridgeSchematics.getTotalCalibrationResult()).isEqualTo(3749L)
     }
+
+    @Test
+    fun partTwoExample() {
+        val input = TestInputReader.read<String>("/day7/example.txt")
+        val ropeBridgeSchematics = RopeBridgeSchematics(input.value)
+        assertThat(ropeBridgeSchematics.getTotalCalibrationResult()).isEqualTo(11387L)
+    }
 }
