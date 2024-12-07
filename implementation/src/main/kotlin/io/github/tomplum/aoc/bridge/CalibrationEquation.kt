@@ -1,14 +1,14 @@
 package io.github.tomplum.aoc.bridge
 
 data class CalibrationEquation(private val equation: String) {
-    val testValue = equation.split(":")[0].trim().toInt()
+    val testValue = equation.split(":")[0].trim().toLong()
 
-    private val values = equation.split(":")[1].trim().split(" ").map { it.trim().toInt() }
+    private val values = equation.split(":")[1].trim().split(" ").map { it.trim().toLong() }
 
     fun hasValidOperatorConfig(): Boolean = recurse(values.toMutableList())
         .any { result -> result == testValue }
 
-    private fun recurse(numbers: MutableList<Int>): List<Int> {
+    private fun recurse(numbers: MutableList<Long>): List<Long> {
         if (numbers.size == 1) {
             return listOf(numbers.first())
         }
