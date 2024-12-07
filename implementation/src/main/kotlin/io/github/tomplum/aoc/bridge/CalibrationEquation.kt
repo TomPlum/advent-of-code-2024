@@ -5,10 +5,10 @@ data class CalibrationEquation(private val equation: String) {
 
     private val values = equation.split(":")[1].trim().split(" ").map { it.trim().toLong() }
 
-    fun hasValidOperatorConfig(): Boolean = recurse(values.toMutableList())
+    fun hasValidOperatorConfig(operations: List<Operation>): Boolean = findResultPermutations(values.toMutableList(), operations)
         .any { result -> result == testValue }
 
-    private fun recurse(numbers: MutableList<Long>): List<Long> {
+    private fun findResultPermutations(numbers: MutableList<Long>, operations: List<Operation>): List<Long> {
         if (numbers.size == 1) {
             return listOf(numbers.first())
         }
@@ -16,10 +16,10 @@ data class CalibrationEquation(private val equation: String) {
         val first = numbers.removeFirst()
         val second = numbers.removeFirst()
 
-        return Operation.entries.flatMap { operation ->
+        return operations.flatMap { operation ->
             val workingValue = operation.apply(first, second)
             val newNumbers = mutableListOf(workingValue) + numbers
-            recurse(newNumbers.toMutableList())
+            findResultPermutations(newNumbers.toMutableList(), operations)
         }
     }
 }

@@ -10,13 +10,17 @@ class RopeBridgeSchematicsTest {
     fun partOneExample() {
         val input = TestInputReader.read<String>("/day7/example.txt")
         val ropeBridgeSchematics = RopeBridgeSchematics(input.value)
-        assertThat(ropeBridgeSchematics.getTotalCalibrationResult()).isEqualTo(3749L)
+        val operations = mutableListOf(Operation.ADD, Operation.MULTIPLY)
+        val totalCalibrationResult = ropeBridgeSchematics.getTotalCalibrationResult(operations)
+        assertThat(totalCalibrationResult).isEqualTo(3749L)
     }
 
     @Test
     fun partTwoExample() {
         val input = TestInputReader.read<String>("/day7/example.txt")
         val ropeBridgeSchematics = RopeBridgeSchematics(input.value)
-        assertThat(ropeBridgeSchematics.getTotalCalibrationResult()).isEqualTo(11387L)
+        val operations = Operation.entries
+        val totalCalibrationResult = ropeBridgeSchematics.getTotalCalibrationResult(operations)
+        assertThat(totalCalibrationResult).isEqualTo(11387L)
     }
 }

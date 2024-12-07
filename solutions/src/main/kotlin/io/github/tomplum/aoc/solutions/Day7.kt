@@ -1,5 +1,6 @@
 package io.github.tomplum.aoc.solutions
 
+import io.github.tomplum.aoc.bridge.Operation
 import io.github.tomplum.aoc.bridge.RopeBridgeSchematics
 import io.github.tomplum.libs.input.Day
 import io.github.tomplum.libs.input.InputReader
@@ -10,10 +11,12 @@ class Day7: Solution<Long, Long> {
     private val ropeBridgeSchematics = RopeBridgeSchematics(input)
 
     override fun part1(): Long {
-        return ropeBridgeSchematics.getTotalCalibrationResult()
+        val operations = mutableListOf(Operation.ADD, Operation.MULTIPLY)
+        return ropeBridgeSchematics.getTotalCalibrationResult(operations)
     }
 
     override fun part2(): Long {
-        return ropeBridgeSchematics.getTotalCalibrationResult()
+        val operations = Operation.entries
+        return ropeBridgeSchematics.getTotalCalibrationResult(operations)
     }
 }
