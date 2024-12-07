@@ -3,7 +3,6 @@ package io.github.tomplum.aoc.search
 import io.github.tomplum.libs.math.Direction
 import io.github.tomplum.libs.math.map.AdventMap2D
 import io.github.tomplum.libs.math.point.Point2D
-import kotlin.math.abs
 
 class WordSearch(data: List<String>): AdventMap2D<WordSearchTile>() {
     init {
@@ -87,40 +86,5 @@ class WordSearch(data: List<String>): AdventMap2D<WordSearchTile>() {
         val topBottomWordInvalid = getTile(topLeft, WordSearchTile('.')).value == getTile(bottomRight, WordSearchTile('.')).value
 
         return !(bottomTopWordInvalid || topBottomWordInvalid)
-    }
-
-    /**
-     * TODO: Consume from lib once published.
-     */
-    private fun Point2D.directionTo(other: Point2D): Pair<Direction?, Point2D> {
-        val xDelta = other.x - x
-        val yDelta = other.y - y
-        val distance = Point2D(abs(xDelta), abs(yDelta))
-
-        return when {
-            yDelta > 0 && xDelta == 0 -> Direction.UP
-            yDelta < 0 && xDelta == 0 -> Direction.DOWN
-            xDelta > 0 && yDelta == 0 -> Direction.RIGHT
-            xDelta < 0 && yDelta == 0 -> Direction.LEFT
-            yDelta < 0 && xDelta > 0 -> Direction.BOTTOM_RIGHT
-            yDelta > 0 && xDelta < 0 -> Direction.TOP_LEFT
-            yDelta < 0 -> Direction.BOTTOM_LEFT
-            yDelta > 0 -> Direction.TOP_RIGHT
-            else -> null
-        }.let { direction ->
-            Pair(direction, distance)
-        }
-    }
-
-    /**
-     * TODO: Consume from lib once published.
-     */
-    private fun Point2D.diagonallyAdjacent(): List<Point2D> {
-        return listOf(
-            this.shift(Direction.TOP_RIGHT),
-            this.shift(Direction.BOTTOM_RIGHT),
-            this.shift(Direction.BOTTOM_LEFT),
-            this.shift(Direction.TOP_LEFT)
-        )
     }
 }

@@ -8,5 +8,5 @@ class MultiplyInstruction(private val instruction: String) {
         .removeSuffix(")")
         .split(",")
         .map { value -> value.toInt() }
-        .product()
+        .product() as Int
 }
