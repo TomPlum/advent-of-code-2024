@@ -12,4 +12,8 @@ class Day7: Solution<Long, Long> {
     override fun part1(): Long {
         return ropeBridgeSchematics.getTotalCalibrationResult()
     }
+
+    override fun part2(): Long {
+        return ropeBridgeSchematics.getTotalCalibrationResult()
+    }
 }
