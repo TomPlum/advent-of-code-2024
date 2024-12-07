@@ -6,17 +6,8 @@ import io.github.tomplum.libs.math.point.Point2D
 
 class WordSearch(data: List<String>): AdventMap2D<WordSearchTile>() {
     init {
-        var x = 0
-        var y = 0
-        data.forEach { row ->
-            row.forEach { column ->
-                val tile = WordSearchTile(column)
-                val position = Point2D(x, y)
-                addTile(position, tile)
-                x++
-            }
-            x = 0
-            y++
+        init(data) { value ->
+            WordSearchTile(value as Char)
         }
     }
 

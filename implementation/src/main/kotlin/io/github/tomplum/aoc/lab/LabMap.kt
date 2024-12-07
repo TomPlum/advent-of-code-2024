@@ -11,19 +11,8 @@ class LabMap(data: List<String>): AdventMap2D<LabTile>() {
     private val yMin: Int
 
     init {
-        var x = 0
-        var y = 0
-
-        data.forEach { row ->
-            row.forEach { column ->
-                val tile = LabTile(column)
-                val position = Point2D(x, y)
-
-                addTile(position, tile)
-                x++
-            }
-            x = 0
-            y++
+        init(data) {
+            LabTile(it as Char)
         }
 
         xMax = xMax()!!
