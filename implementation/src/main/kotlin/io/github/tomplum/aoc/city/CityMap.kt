@@ -49,7 +49,9 @@ class CityMap(data: List<String>): AdventMap2D<CityTile>() {
 
                 listOf(firstAntiNode, secondAntiNode)
             }
-        }.count { it.isValidAntiNodePosition() }
+        }
+        .distinct()
+        .count { it.isValidAntiNodePosition() }
 
     private fun Point2D.isValidAntiNodePosition(): Boolean {
         return this.x >= xMin && this.x <= xMax && this.y >= yMin && this.y <= yMax
