@@ -4,7 +4,6 @@ import io.github.tomplum.libs.extensions.cartesianProduct
 import io.github.tomplum.libs.math.map.AdventMap2D
 import io.github.tomplum.libs.math.point.Point2D
 import kotlin.math.roundToInt
-import kotlin.math.sqrt
 
 class CityMap(data: List<String>): AdventMap2D<CityTile>() {
     private val xMax: Int
