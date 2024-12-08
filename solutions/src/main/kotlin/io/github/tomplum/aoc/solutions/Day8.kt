@@ -1,6 +1,8 @@
 package io.github.tomplum.aoc.solutions
 
 import io.github.tomplum.aoc.city.CityMap
+import io.github.tomplum.aoc.city.ResonantFrequencyModel
+import io.github.tomplum.aoc.city.ResonantHarmonicsModel
 import io.github.tomplum.libs.input.Day
 import io.github.tomplum.libs.input.InputReader
 import io.github.tomplum.libs.solutions.Solution
@@ -10,10 +12,12 @@ class Day8: Solution<Int, Int> {
     private val cityMap = CityMap(input)
 
     override fun part1(): Int {
-        return cityMap.getAntiNodes()
+        val model = ResonantFrequencyModel()
+        return cityMap.getAntiNodes(model)
     }
 
     override fun part2(): Int {
-        return cityMap.getAntiNodesWithHarmonicFrequency()
+        val model = ResonantHarmonicsModel()
+        return cityMap.getAntiNodes(model)
     }
 }

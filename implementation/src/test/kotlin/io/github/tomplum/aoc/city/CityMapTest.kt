@@ -10,13 +10,15 @@ class CityMapTest {
     fun partOneExample() {
         val input = TestInputReader.read<String>("/day8/example.txt")
         val cityMap = CityMap(input.value)
-        assertThat(cityMap.getAntiNodes()).isEqualTo(14)
+        val model = ResonantFrequencyModel()
+        assertThat(cityMap.getAntiNodes(model)).isEqualTo(14)
     }
 
     @Test
     fun partTwoExample() {
         val input = TestInputReader.read<String>("/day8/example.txt")
         val cityMap = CityMap(input.value)
-        assertThat(cityMap.getAntiNodesWithHarmonicFrequency()).isEqualTo(34)
+        val model = ResonantHarmonicsModel()
+        assertThat(cityMap.getAntiNodes(model)).isEqualTo(34)
     }
 }
