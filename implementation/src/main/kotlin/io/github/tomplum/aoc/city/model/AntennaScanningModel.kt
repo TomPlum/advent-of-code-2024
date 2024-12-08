@@ -3,6 +3,7 @@ package io.github.tomplum.aoc.city.model
 import io.github.tomplum.aoc.city.CityTile
 import io.github.tomplum.libs.math.point.Point2D
 import kotlin.math.roundToInt
+import io.github.tomplum.aoc.city.CityMap
 
 abstract class AntennaScanningModel {
     /**
