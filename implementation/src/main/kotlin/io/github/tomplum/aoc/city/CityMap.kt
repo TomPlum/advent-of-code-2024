@@ -82,7 +82,7 @@ class CityMap(data: List<String>): AdventMap2D<CityTile>() {
     private fun findAntiNodes(first: Point2D, second: Point2D, interval: Int = 1): Pair<Point2D, Point2D> {
         val dx = second.x - first.x.toDouble()
         val dy = second.y - first.y
-        val distance = sqrt(dx * dx + dy * dy)
+        val distance = first.distanceBetween(second).toDouble()
 
         val unitDx = dx / distance
         val unitDy = dy / distance
