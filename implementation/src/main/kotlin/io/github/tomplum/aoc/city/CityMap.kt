@@ -35,7 +35,7 @@ class CityMap(data: List<String>): AdventMap2D<CityTile>() {
                 .filterNot { it.first == it.second }
 
             combinations.flatMap { (first, second) ->
-                findAntiNodes(first, second).positions.toList()
+                findAntiNodes(first, second).toList()
             }
         }
         .distinct()
@@ -54,10 +54,7 @@ class CityMap(data: List<String>): AdventMap2D<CityTile>() {
 
             combinations.flatMap { (first, second) ->
                 val antiNodes = mutableSetOf<Point2D>()
-
-                val antiNodeMeta = findAntiNodes(first, second)
-                var positions = antiNodeMeta.positions
-
+                var positions = findAntiNodes(first, second)
                 var interval = 1
 
                 while(positions.toList().any { it.isValidAntiNodePosition() }) {
@@ -71,7 +68,7 @@ class CityMap(data: List<String>): AdventMap2D<CityTile>() {
                         addTile(positions.second, CityTile('#'))
                     }
 
-                    positions = findAntiNodes(first, second, interval).positions
+                    positions = findAntiNodes(first, second, interval)
                     interval++
                 }
 
@@ -82,7 +79,7 @@ class CityMap(data: List<String>): AdventMap2D<CityTile>() {
         .let { antiNodes -> antiNodes + filterTiles { it.isAntenna() }.keys }
         .count { it.isValidAntiNodePosition() }
 
-    private fun findAntiNodes(first: Point2D, second: Point2D, interval: Int = 1): AntiNodeMeta {
+    private fun findAntiNodes(first: Point2D, second: Point2D, interval: Int = 1): Pair<Point2D, Point2D> {
         val dx = second.x - first.x.toDouble()
         val dy = second.y - first.y
         val distance = sqrt(dx * dx + dy * dy)
@@ -96,7 +93,7 @@ class CityMap(data: List<String>): AdventMap2D<CityTile>() {
         val firstAntiNode = Point2D(first.x - offsetX.roundToInt(), first.y - offsetY.roundToInt())
         val secondAntiNode = Point2D(second.x + offsetX.roundToInt(), second.y + offsetY.roundToInt())
 
-        return AntiNodeMeta(distance.toInt(), firstAntiNode to secondAntiNode)
+        return firstAntiNode to secondAntiNode
     }
 
     private fun Point2D.isValidAntiNodePosition(): Boolean {
