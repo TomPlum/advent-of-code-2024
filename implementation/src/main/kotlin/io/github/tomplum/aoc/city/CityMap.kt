@@ -3,6 +3,7 @@ package io.github.tomplum.aoc.city
 import io.github.tomplum.libs.extensions.cartesianProduct
 import io.github.tomplum.libs.math.map.AdventMap2D
 import io.github.tomplum.libs.math.point.Point2D
+import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
 class CityMap(data: List<String>): AdventMap2D<CityTile>() {
@@ -22,7 +23,7 @@ class CityMap(data: List<String>): AdventMap2D<CityTile>() {
         yMax = yMax()!!
     }
 
-    fun getAntiNodes(): Int =  filterTiles { tile -> tile.isAntenna() }
+    fun getAntiNodes(): Int = filterTiles { tile -> tile.isAntenna() }
         .entries
         .groupBy { it.value.value }
         .values
@@ -34,24 +35,69 @@ class CityMap(data: List<String>): AdventMap2D<CityTile>() {
                 .filterNot { it.first == it.second }
 
             combinations.flatMap { (first, second) ->
-                val dx = second.x - first.x.toDouble()
-                val dy = second.y - first.y
-                val distance = sqrt(dx * dx + dy * dy)
-
-                val unitDx = dx / distance
-                val unitDy = dy / distance
-
-                val scaledDx = unitDx * distance
-                val scaledDy = unitDy * distance
-
-                val firstAntiNode = Point2D(first.x - scaledDx.toInt(), first.y - scaledDy.toInt())
-                val secondAntiNode = Point2D(second.x + scaledDx.toInt(), second.y + scaledDy.toInt())
-
-                listOf(firstAntiNode, secondAntiNode)
+                findAntiNodes(first, second).positions.toList()
             }
         }
         .distinct()
         .count { it.isValidAntiNodePosition() }
+
+    fun getAntiNodesWithHarmonicFrequency(): Int =  filterTiles { tile -> tile.isAntenna() }
+        .entries
+        .groupBy { it.value.value }
+        .values
+        .flatMap { antennas ->
+            val antennaPositions = antennas.map { it.key }
+
+            val combinations = antennaPositions
+                .cartesianProduct(antennaPositions)
+                .filterNot { it.first == it.second }
+
+            combinations.flatMap { (first, second) ->
+                val antiNodes = mutableSetOf<Point2D>()
+
+                val antiNodeMeta = findAntiNodes(first, second)
+                var positions = antiNodeMeta.positions
+
+                var interval = 1
+
+                while(positions.toList().any { it.isValidAntiNodePosition() }) {
+                    if (positions.first.isValidAntiNodePosition()) {
+                        antiNodes.add(positions.first)
+                        addTile(positions.first, CityTile('#'))
+                    }
+
+                    if (positions.second.isValidAntiNodePosition()) {
+                        antiNodes.add(positions.second)
+                        addTile(positions.second, CityTile('#'))
+                    }
+
+                    positions = findAntiNodes(first, second, interval).positions
+                    interval++
+                }
+
+                antiNodes
+            }
+        }
+        .distinct()
+        .let { antiNodes -> antiNodes + filterTiles { it.isAntenna() }.keys }
+        .count { it.isValidAntiNodePosition() }
+
+    private fun findAntiNodes(first: Point2D, second: Point2D, interval: Int = 1): AntiNodeMeta {
+        val dx = second.x - first.x.toDouble()
+        val dy = second.y - first.y
+        val distance = sqrt(dx * dx + dy * dy)
+
+        val unitDx = dx / distance
+        val unitDy = dy / distance
+
+        val offsetX = interval * distance * unitDx
+        val offsetY = interval * distance * unitDy
+
+        val firstAntiNode = Point2D(first.x - offsetX.roundToInt(), first.y - offsetY.roundToInt())
+        val secondAntiNode = Point2D(second.x + offsetX.roundToInt(), second.y + offsetY.roundToInt())
+
+        return AntiNodeMeta(distance.toInt(), firstAntiNode to secondAntiNode)
+    }
 
     private fun Point2D.isValidAntiNodePosition(): Boolean {
         return this.x >= xMin && this.x <= xMax && this.y >= yMin && this.y <= yMax

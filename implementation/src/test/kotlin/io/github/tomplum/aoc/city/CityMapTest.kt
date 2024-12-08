@@ -12,4 +12,11 @@ class CityMapTest {
         val cityMap = CityMap(input.value)
         assertThat(cityMap.getAntiNodes()).isEqualTo(14)
     }
+
+    @Test
+    fun partTwoExample() {
+        val input = TestInputReader.read<String>("/day8/example.txt")
+        val cityMap = CityMap(input.value)
+        assertThat(cityMap.getAntiNodesWithHarmonicFrequency()).isEqualTo(34)
+    }
 }
