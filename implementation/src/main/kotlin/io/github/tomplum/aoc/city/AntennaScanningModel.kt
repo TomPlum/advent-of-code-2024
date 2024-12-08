@@ -20,7 +20,28 @@ abstract class AntennaScanningModel {
         cityBoundary: Pair<Point2D, Point2D>
     ): List<Point2D>
 
-    protected fun findAntiNodes(first: Point2D, second: Point2D, interval: Int = 1): Pair<Point2D, Point2D> {
+    /**
+     * Finds a pair of possible anti-node location candidates relative
+     * to the [first] and [second] antenna locations at the given [interval].
+     *
+     * These locations are an extrapolation based on a hypothetical straight
+     * line drawn directly through the [first] and [second] antenna positions.
+     *
+     * The [interval] determines how far along the line the anti-node positions
+     * should be found for. This is calculated based on the Manhattan distance
+     * between the two antennas. For example, if the two antennas are 3 away
+     * from one-another, then interval (I) would be distance (D) on each side
+     * of the two antennas, and so forth (I=2 -> D=6), (I=3, D=9) etc.
+     *
+     * Such locations may not be within the city boundaries and should be
+     * validated after-wards.
+     *
+     * @param first The first antenna location.
+     * @param second The second antenna location.
+     * @param interval How many distance intervals along the resultant line to get anti-nodes for.
+     * @returns The locations of the two anti-nodes along the antenna line.
+     */
+    protected fun getAntiNodePairLocations(first: Point2D, second: Point2D, interval: Int = 1): Pair<Point2D, Point2D> {
         val dx = second.x - first.x.toDouble()
         val dy = second.y - first.y
         val distance = first.distanceBetween(second).toDouble()

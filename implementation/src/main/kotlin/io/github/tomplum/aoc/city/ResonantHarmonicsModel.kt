@@ -13,7 +13,7 @@ class ResonantHarmonicsModel: AntennaScanningModel() {
 
         return combinations.flatMap { (first, second) ->
             val antiNodes = mutableListOf<Point2D>()
-            var positions = findAntiNodes(first, second)
+            var positions = getAntiNodePairLocations(first, second)
             var interval = 1
 
             while(positions.toList().any { position -> isWithinCityBoundary(position, cityBoundary) }) {
@@ -25,7 +25,7 @@ class ResonantHarmonicsModel: AntennaScanningModel() {
                     antiNodes.add(positions.second)
                 }
 
-                positions = findAntiNodes(first, second, interval)
+                positions = getAntiNodePairLocations(first, second, interval)
                 interval++
             }
 

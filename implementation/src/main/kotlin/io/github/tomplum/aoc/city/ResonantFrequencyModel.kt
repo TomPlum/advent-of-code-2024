@@ -12,7 +12,7 @@ class ResonantFrequencyModel: AntennaScanningModel() {
             .filterNot { (first, second) -> first == second }
 
         return combinations
-            .flatMap { (first, second) -> findAntiNodes(first, second).toList() }
+            .flatMap { (first, second) -> getAntiNodePairLocations(first, second).toList() }
             .filter { position -> isWithinCityBoundary(position, cityBoundary)
         }
     }
