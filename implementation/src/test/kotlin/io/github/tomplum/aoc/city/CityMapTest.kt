@@ -2,6 +2,8 @@ package io.github.tomplum.aoc.city
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import io.github.tomplum.aoc.city.model.ResonantFrequencyModel
+import io.github.tomplum.aoc.city.model.ResonantHarmonicsModel
 import io.github.tomplum.aoc.input.TestInputReader
 import org.junit.jupiter.api.Test
 

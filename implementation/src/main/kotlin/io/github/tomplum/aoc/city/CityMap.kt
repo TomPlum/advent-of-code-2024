@@ -1,5 +1,6 @@
 package io.github.tomplum.aoc.city
 
+import io.github.tomplum.aoc.city.model.AntennaScanningModel
 import io.github.tomplum.libs.math.map.AdventMap2D
 import io.github.tomplum.libs.math.point.Point2D
 
