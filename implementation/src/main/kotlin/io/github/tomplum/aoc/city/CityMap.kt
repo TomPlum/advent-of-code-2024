@@ -22,39 +22,36 @@ class CityMap(data: List<String>): AdventMap2D<CityTile>() {
         yMax = yMax()!!
     }
 
-    fun getAntiNodes(): Int {
-        val antiNodes = mutableSetOf<Point2D>()
+    fun getAntiNodes(): Int =  filterTiles { tile -> tile.isAntenna() }
+        .entries
+        .groupBy { it.value.value }
+        .values
+        .flatMap { antennas ->
+            val antennaPositions = antennas.map { it.key }
 
-        filterTiles { tile -> tile.isAntenna() }
-            .entries
-            .groupBy { it.value.value }
-            .forEach { (frequency, antennas) ->
-                val antennaPositions = antennas.map { it.key }
-                val combinations = antennaPositions.cartesianProduct(antennaPositions).filterNot { it.first == it.second }
-                combinations.forEach { (first, second) ->
-                    val dx = second.x - first.x.toDouble()
-                    val dy = second.y - first.y
-                    val distance = sqrt(dx * dx + dy * dy)
+            val combinations = antennaPositions
+                .cartesianProduct(antennaPositions)
+                .filterNot { it.first == it.second }
 
-                    val unitDx = dx / distance
-                    val unitDy = dy / distance
+            combinations.flatMap { (first, second) ->
+                val dx = second.x - first.x.toDouble()
+                val dy = second.y - first.y
+                val distance = sqrt(dx * dx + dy * dy)
 
-                    val scaledDx = unitDx * distance
-                    val scaledDy = unitDy * distance
+                val unitDx = dx / distance
+                val unitDy = dy / distance
 
-                    val firstAntiNode = Point2D(first.x - scaledDx.toInt(), first.y - scaledDy.toInt())
-                    val secondAntiNode = Point2D(second.x + scaledDx.toInt(), second.y + scaledDy.toInt())
+                val scaledDx = unitDx * distance
+                val scaledDy = unitDy * distance
 
-                    antiNodes.add(firstAntiNode)
-                    antiNodes.add(secondAntiNode)
-                }
+                val firstAntiNode = Point2D(first.x - scaledDx.toInt(), first.y - scaledDy.toInt())
+                val secondAntiNode = Point2D(second.x + scaledDx.toInt(), second.y + scaledDy.toInt())
+
+                listOf(firstAntiNode, secondAntiNode)
             }
-        return antiNodes.count { it.isValidAntiNodePosition() }
-    }
+        }.count { it.isValidAntiNodePosition() }
 
     private fun Point2D.isValidAntiNodePosition(): Boolean {
-        val isWithinMapBounds = this.x >= xMin && this.x <= xMax && this.y >= yMin && this.y <= yMax
-//        val isNotOverlappingAntenna = filterTiles { it.isAntenna() }.none { it.key == this }
-        return isWithinMapBounds
+        return this.x >= xMin && this.x <= xMax && this.y >= yMin && this.y <= yMax
     }
 }
