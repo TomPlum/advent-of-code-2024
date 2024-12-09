@@ -10,7 +10,10 @@ class Day9: Solution<Long, Long> {
     private val diskMap = DiskMap(input)
 
     override fun part1(): Long {
-        // 1590748305 too low
         return diskMap.getFileSystemChecksum()
+    }
+
+    override fun part2(): Long {
+        return diskMap.compressFiles().calculateChecksum()
     }
 }
