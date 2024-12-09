@@ -12,4 +12,11 @@ class DiskMapTest {
         val diskMap = DiskMap(input)
         assertThat(diskMap.getFileSystemChecksum()).isEqualTo(1928)
     }
+
+    @Test
+    fun partTwoExample() {
+        val input = TestInputReader.read<String>("/day9/example.txt").asSingleString()
+        val diskMap = DiskMap(input)
+        assertThat(diskMap.compressFiles().calculateChecksum()).isEqualTo(2858)
+    }
 }
