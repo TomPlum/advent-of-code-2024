@@ -1,6 +1,6 @@
 # :christmas_tree: Advent of Code 2024
 
-![GitHub](https://img.shields.io/badge/stars-16%2F50-yellow)
+![GitHub](https://img.shields.io/badge/stars-18%2F50-yellow)
 
 ## What is Advent of Code?
 
@@ -53,7 +53,7 @@ tests in the `common`, `implementation` and `solutions` Gradle sub-projects as w
 | 06  | 5067          | 5ms      | 1793            | 4s 400ms | [Guard Gallivant](docs/DAY06.MD)       |
 | 07  | 2664460013123 | 91ms     | 426214131924213 | 1s 802ms | [Bridge Repair](docs/DAY07.MD)         |
 | 08  | 265           | 10ms     | 962             | 6ms      | [Resonant Collinearity](docs/DAY08.MD) |
-| 09  | -             | -        | -               | -        | [](docs/DAY09.MD)                      |
+| 09  | 6401092019345 | 423ms    | 6431472344710   | 1s 942ms | [Disk Fragmenter](docs/DAY09.MD)       |
 | 10  | -             | -        | -               | -        | [](docs/DAY10.MD)                      |
 | 11  | -             | -        | -               | -        | [](docs/DAY11.MD)                      |
 | 12  | -             | -        | -               | -        | [](docs/DAY12.MD)                      |
