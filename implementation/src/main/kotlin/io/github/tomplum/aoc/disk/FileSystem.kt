@@ -2,11 +2,18 @@ package io.github.tomplum.aoc.disk
 
 data class FileSystem(val data: String) {
 
+    /**
+     * The number of blocks available in the file system.
+     * Is determined by the file and empty blocks in [data].
+     */
     private val blockSpaces = data.map { it.digitToInt() }.sum()
 
+    /**
+     * Indexes of blocks within the file system that
+     * are empty. These are represented by blocks
+     * whose values are -1.
+     */
     private val emptyBlockIndices = mutableListOf<Int>()
-
-    private val contiguousEmptyBlocks = mutableListOf<IntRange>()
 
     /**
      * A map of file id to the indices of the blocks
@@ -14,8 +21,15 @@ data class FileSystem(val data: String) {
      */
     val files = mutableMapOf<Int, IntRange>()
 
+    /**
+     * Blocks within the file system that can store 1-bit
+     * of data each. All blocks are initialised as empty (-1).
+     */
     private val blocks = IntArray(blockSpaces) { -1 }
 
+    /**
+     * The index of the last block in the file system.
+     */
     val lastIndex = blockSpaces - 1
 
     init {
@@ -35,7 +49,6 @@ data class FileSystem(val data: String) {
             if (diskMapIndex < data.length - 1) {
                 val emptySpace = data[diskMapIndex + 1].digitToInt()
                 val emptySpaceRange = blockRange.last + 1..blockRange.last + emptySpace
-                contiguousEmptyBlocks.add(emptySpaceRange)
 
                 emptySpaceRange.forEach { targetIndex ->
                     emptyBlockIndices.add(targetIndex)
