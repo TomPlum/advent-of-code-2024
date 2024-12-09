@@ -1,8 +1,7 @@
 package io.github.tomplum.aoc.disk
 
 class DiskMap(private val data: String) {
-
-    fun getFileSystemChecksum(): Int {
+    fun getFileSystemChecksum(): Long {
         val fs = FileSystem(data)
         val compressedFs = fs.clone()
 

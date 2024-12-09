@@ -1,7 +1,5 @@
 package io.github.tomplum.aoc.disk
 
-import io.github.tomplum.libs.extensions.product
-
 data class FileSystem(val data: String) {
 
     private val blockSpaces = data.map { it.digitToInt() }.sum()
@@ -61,11 +59,11 @@ data class FileSystem(val data: String) {
         return emptyBlockIndices.removeFirst()
     }
 
-    fun calculateChecksum(): Int = blocks.mapIndexed { blockIndex, blockValue ->
+    fun calculateChecksum(): Long = blocks.mapIndexed { blockIndex, blockValue ->
         if (blockValue != -1) {
-            blockIndex * blockValue
+            blockIndex * blockValue.toLong()
         } else {
-            0
+            0L
         }
     }.sum()
 
