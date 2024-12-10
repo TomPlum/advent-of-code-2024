@@ -10,6 +10,10 @@ class Day10: Solution<Int, Int> {
     private val hikingTrailMap = HikingTrailMap(input)
 
     override fun part1(): Int {
-        return hikingTrailMap.findTrailheads()
+        return hikingTrailMap.getTrailHeadScoreSum()
+    }
+
+    override fun part2(): Int {
+        return hikingTrailMap.getTrailHeadRatingSum()
     }
 }
