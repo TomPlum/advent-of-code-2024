@@ -1,6 +1,6 @@
 # :christmas_tree: Advent of Code 2024
 
-![GitHub](https://img.shields.io/badge/stars-18%2F50-yellow)
+![GitHub](https://img.shields.io/badge/stars-20%2F50-yellow)
 
 ## What is Advent of Code?
 
@@ -54,7 +54,7 @@ tests in the `common`, `implementation` and `solutions` Gradle sub-projects as w
 | 07  | 2664460013123 | 91ms     | 426214131924213 | 1s 802ms | [Bridge Repair](docs/DAY07.MD)         |
 | 08  | 265           | 10ms     | 962             | 6ms      | [Resonant Collinearity](docs/DAY08.MD) |
 | 09  | 6401092019345 | 423ms    | 6431472344710   | 1s 942ms | [Disk Fragmenter](docs/DAY09.MD)       |
-| 10  | -             | -        | -               | -        | [](docs/DAY10.MD)                      |
+| 10  | 798           | 11ms     | 1816            | 7ms      | [Hoof It](docs/DAY10.MD)               |
 | 11  | -             | -        | -               | -        | [](docs/DAY11.MD)                      |
 | 12  | -             | -        | -               | -        | [](docs/DAY12.MD)                      |
 | 13  | -             | -        | -               | -        | [](docs/DAY13.MD)                      |
@@ -71,9 +71,9 @@ tests in the `common`, `implementation` and `solutions` Gradle sub-projects as w
 | 24  | -             | -        | -               | -        | [](docs/DAY24.MD)                      |
 | 25  | -             | -        | -               | -        | [](docs/DAY25.MD)                      |
 
-Average Execution Time: 646ms \
+Average Execution Time: 781ms \
 Total Execution Time: 15s 441ms \
-i7 5820K - OpenJDK 14.0.2 - Ubuntu 20.04
+i5 15400K - Amazon Corretto 17.0.2 - MacOS Sonoma
 
 ## Advent Calendar
 A .GIF of the complete animated calendar goes here once completed.
