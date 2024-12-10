@@ -10,6 +10,13 @@ class HikingTrailMapTest {
     fun partOneExampleLarger() {
         val input = TestInputReader.read<String>("/day10/example-larger.txt")
         val hikingTrailMap = HikingTrailMap(input.value)
-        assertThat(hikingTrailMap.findTrailheads()).isEqualTo(36)
+        assertThat(hikingTrailMap.getTrailHeadScoreSum()).isEqualTo(36)
+    }
+
+    @Test
+    fun partTwoExample() {
+        val input = TestInputReader.read<String>("/day10/example-larger.txt")
+        val hikingTrailMap = HikingTrailMap(input.value)
+        assertThat(hikingTrailMap.getTrailHeadRatingSum()).isEqualTo(81)
     }
 }
