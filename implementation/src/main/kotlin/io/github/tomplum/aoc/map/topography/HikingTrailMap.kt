@@ -17,29 +17,28 @@ class HikingTrailMap(data: List<String>): AdventMap2D<TrailTile>() {
         }
 
     private fun findTrailEnds(next: Set<Point2D>, visited: MutableSet<Point2D> = mutableSetOf()): Int {
-        var count = 0
-
-        for (position in next) {
-            if (position in visited) continue
-            visited.add(position)
-
-            val currentTile = getTile(position, TrailTile(-1))
-
-            if (currentTile.isTrailEnd()) {
-                count += 1
+        return next.fold(0) { trailsEnds, position ->
+            if (position in visited) {
+                trailsEnds
             } else {
-                val nextTrailPositions = position.orthogonallyAdjacent()
-                    .asSequence()
-                    .filter { it !in visited }
-                    .map { it to getTile(it, TrailTile(-1)) }
-                    .filter { (_, tile) -> tile.height == currentTile.height + 1 }
-                    .map { (pos, _) -> pos }
-                    .toSet()
+                visited.add(position)
 
-                count += findTrailEnds(nextTrailPositions, visited)
+                val currentTile = getTile(position, TrailTile(-1))
+
+                if (currentTile.isTrailEnd()) {
+                    trailsEnds + 1
+                } else {
+                    val nextTrailPositions = position.orthogonallyAdjacent()
+                        .asSequence()
+                        .filter { it !in visited }
+                        .map { it to getTile(it, TrailTile(-1)) }
+                        .filter { (_, tile) -> tile.height == currentTile.height + 1 }
+                        .map { (pos, _) -> pos }
+                        .toSet()
+
+                    trailsEnds + findTrailEnds(nextTrailPositions, visited)
+                }
             }
         }
-
-        return count
     }
 }
