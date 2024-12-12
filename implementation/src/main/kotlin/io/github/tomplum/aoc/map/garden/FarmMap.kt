@@ -23,80 +23,65 @@ class FarmMap(data: List<String>): AdventMap2D<FarmTile>() {
 
     fun getTotalGardenPlotFenceCost(): Int {
         val plots = mutableMapOf<Char, Set<Set<Point2D>>>()
-        var currentPlot = mutableSetOf<Point2D>()
-        var currentPlotId = '?'
         val seen = mutableSetOf<Point2D>()
 
-        getDataMap().forEach { (pos, tile) ->
-            if (currentPlotId != '?' && tile.value != currentPlotId) {
-                plots.merge(currentPlotId, setOf(currentPlot)) { old, new -> old + new }
-                currentPlot = mutableSetOf()
+        while(getDataMap().any { !it.value.isPlotted() }) {
+            val (pos, tile) = findTile { !it.isPlotted() } ?: continue
+            val currentPlotPlant = tile.plant
+            val gardenPlotPoints = exploreGardenPlot(pos, currentPlotPlant)
+
+            plots.merge(currentPlotPlant, setOf(gardenPlotPoints)) { old, new -> old + new }
+            seen.addAll(gardenPlotPoints)
+            gardenPlotPoints.forEach {
+                addTile(it, FarmTile('^'))
             }
-
-            currentPlotId = tile.value
-
-            val adjacent = getAdjacentLines(pos, currentPlotId)
-
-            currentPlot.addAll(adjacent + pos)
-            seen.addAll(adjacent + pos)
         }
 
         return plots.values.sumOf { plotList ->
             plotList.sumOf { plot ->
                 val area = plot.size
-                val perimeter = when(area) {
-                    1 -> 4
-                    2 -> 8
-                    else -> calculatePerimeter(plot)
-                }
+                val perimeter = calculatePerimeter(plot)
                 area * perimeter
             }
         }
     }
 
     /**
-     * TODO: Move to libs (and functions below)
+     * TODO: Move to libs
      */
     private fun calculatePerimeter(points: Set<Point2D>): Int {
-        var perimeter = 0
-
-        for (point in points) {
-            var edges = 4
-
-            point.orthogonallyAdjacent().forEach { neighbour ->
-                if (neighbour in points) {
-                    edges--
-                }
+        return points.fold(0) { perimeter, point ->
+            perimeter + point.orthogonallyAdjacent().fold(4) { edges, neighbour ->
+                if (neighbour in points) edges - 1 else edges
             }
-
-            perimeter += edges
         }
-
-        return perimeter
     }
 
-    private fun getAdjacentLines(start: Point2D, id: Char): Set<Point2D> {
-        val points = mutableSetOf<Point2D>()
+    private fun exploreGardenPlot(start: Point2D, plantId: Char): Set<Point2D> {
+        val gardenPlotPoints = mutableSetOf<Point2D>()
         val next = Stack<Point2D>()
         val seen = mutableSetOf<Point2D>()
+
         next.add(start)
 
-        while(next.isNotEmpty()) {
+        while (next.isNotEmpty()) {
             val position = next.pop()
-            seen.add(position)
 
-            if (getTile(position, FarmTile('?')).value == id) {
-                points.add(position)
+            if (!seen.add(position)) {
+                continue
             }
 
-            val candidates = filterPoints(position.orthogonallyAdjacent().toSet())
-                .filter { it.value.value == id }
-                .filter { hasRecorded(it.key) }
-                .filter { !seen.contains(it.key) }
+            if (getTile(position, FarmTile('?')).plant == plantId) {
+                gardenPlotPoints.add(position)
 
-            next.addAll(candidates.keys)
+                position.orthogonallyAdjacent().filter { adjacent ->
+                    val notSeen = adjacent !in seen
+                    val withinPlot = getTile(adjacent, FarmTile('?')).plant == plantId
+                    notSeen && withinPlot
+                }.forEach { next.add(it) }
+            }
         }
 
-        return points
+        return gardenPlotPoints
     }
 }
