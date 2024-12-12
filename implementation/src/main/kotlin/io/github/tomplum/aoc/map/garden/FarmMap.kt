@@ -90,6 +90,7 @@ class FarmMap(data: List<String>): AdventMap2D<FarmTile>() {
             }
 
             val candidates = filterPoints(position.orthogonallyAdjacent().toSet())
+                .filter { it.value.value == id }
                 .filter { hasRecorded(it.key) }
                 .filter { !seen.contains(it.key) }
 
