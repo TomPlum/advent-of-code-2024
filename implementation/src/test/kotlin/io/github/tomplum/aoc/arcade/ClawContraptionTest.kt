@@ -12,4 +12,11 @@ class ClawContraptionTest {
         val clawContraption = ClawContraption(input.value)
         assertThat(clawContraption.simulate()).isEqualTo(480)
     }
+
+    @Test
+    fun examplePartOTwo() {
+        val input = TestInputReader.read<String>("/day13/example.txt")
+        val clawContraption = ClawContraption(input.value)
+        assertThat(clawContraption.simulate(offset = 10000000000000)).isEqualTo(875318608908)
+    }
 }
