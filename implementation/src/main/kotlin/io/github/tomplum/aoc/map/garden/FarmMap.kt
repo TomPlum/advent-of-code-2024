@@ -21,7 +21,7 @@ class FarmMap(data: List<String>): AdventMap2D<FarmTile>() {
         yMin = yMin()!!
     }
 
-    fun getTotalGardenPlotFenceCost(): Int {
+    fun getTotalGardenPlotFenceCost(bulkPriceDiscount: Boolean = false): Int {
         val plots = mutableMapOf<Char, Set<Set<Point2D>>>()
         val seen = mutableSetOf<Point2D>()
 
@@ -40,7 +40,11 @@ class FarmMap(data: List<String>): AdventMap2D<FarmTile>() {
         return plots.values.sumOf { plotList ->
             plotList.sumOf { plot ->
                 val area = plot.size
-                val perimeter = calculatePerimeter(plot)
+                val perimeter = if (bulkPriceDiscount) {
+                    1
+                } else {
+                    calculatePerimeter(plot)
+                }
                 area * perimeter
             }
         }
