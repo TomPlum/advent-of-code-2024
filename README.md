@@ -1,6 +1,6 @@
 # :christmas_tree: Advent of Code 2024
 
-![GitHub](https://img.shields.io/badge/stars-25%2F50-yellow)
+![GitHub](https://img.shields.io/badge/stars-29%2F50-yellow)
 
 ## What is Advent of Code?
 
@@ -60,7 +60,7 @@ tests in the `common`, `implementation` and `solutions` Gradle sub-projects as w
 | 13  | -             | -        | -               | -        | [Claw Contraption](docs/DAY13.MD)      |
 | 14  | -             | -        | -               | -        | [](docs/DAY14.MD)                      |
 | 15  | -             | -        | -               | -        | [](docs/DAY15.MD)                      |
-| 16  | -             | -        | -               | -        | [](docs/DAY16.MD)                      |
+| 16  | 65436         | 65ms     | 489             | 436ms    | [Reindeer Maze](docs/DAY16.MD)         |
 | 17  | -             | -        | -               | -        | [](docs/DAY17.MD)                      |
 | 18  | -             | -        | -               | -        | [](docs/DAY18.MD)                      |
 | 19  | -             | -        | -               | -        | [](docs/DAY19.MD)                      |
