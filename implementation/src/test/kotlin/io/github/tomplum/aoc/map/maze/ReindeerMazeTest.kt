@@ -19,4 +19,18 @@ class ReindeerMazeTest {
         val reindeerMaze = ReindeerMaze(input.value)
         assertThat(reindeerMaze.calculateLowestPossibleScore()).isEqualTo(11048)
     }
+
+    @Test
+    fun partTwoExampleOne() {
+        val input = TestInputReader.read<String>("/day16/example-1.txt")
+        val reindeerMaze = ReindeerMaze(input.value)
+        assertThat(reindeerMaze.countBestPathTiles()).isEqualTo(45)
+    }
+
+    @Test
+    fun partTwoExampleTwo() {
+        val input = TestInputReader.read<String>("/day16/example-2.txt")
+        val reindeerMaze = ReindeerMaze(input.value)
+        assertThat(reindeerMaze.countBestPathTiles()).isEqualTo(64)
+    }
 }
