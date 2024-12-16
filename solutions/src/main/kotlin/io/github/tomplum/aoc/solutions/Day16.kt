@@ -12,4 +12,8 @@ class Day16: Solution<Int, Int> {
     override fun part1(): Int {
         return reindeerMaze.calculateLowestPossibleScore()
     }
+
+    override fun part2(): Int {
+        return reindeerMaze.countBestPathTiles()
+    }
 }
