@@ -5,21 +5,23 @@ import io.github.tomplum.libs.math.Direction.*
 
 class WarehouseSimulator(instructions: List<String>) {
 
-    private val map = WarehouseMap(instructions.split { it.isBlank() }.first().toList())
+    private val map = RegularWarehouseMap(instructions.split { it.isBlank() }.first().toList())
+    private val scaledMap = ScaledWarehouseMap(instructions.split { it.isBlank() }.first().toList())
     private val directions = instructions.split { it.isBlank() }.last().flatMap { it.map { it.toDirection() } }
 
-    fun simulate(): Int {
-        var robotPosition = map.getRobotPosition()
+    fun simulate(scaled: Boolean = false): Int {
+        val warehouseMap: WarehouseMap = if (scaled) scaledMap else map
+        var robotPosition = warehouseMap.getRobotPosition()
 
         directions.forEach { direction ->
-            val nextPositionTile = map.getWarehouseTile(robotPosition.shift(direction))
+            val nextPositionTile = warehouseMap.getWarehouseTile(robotPosition.shift(direction))
 
             if (nextPositionTile.isEmpty()) {
-                robotPosition = map.moveRobot(robotPosition, direction)
+                robotPosition = warehouseMap.moveRobot(robotPosition, direction)
             } else if (nextPositionTile.isObstacle()) {
-                val moved = map.moveObstacle(robotPosition, direction)
+                val moved = warehouseMap.moveObstacle(robotPosition, direction)
                 if (moved) {
-                    robotPosition = map.moveRobot(robotPosition, direction)
+                    robotPosition = warehouseMap.moveRobot(robotPosition, direction)
                 }
             }
         }
