@@ -6,5 +6,5 @@ class MazeTile(override val value: Char): MapTile<Char>(value) {
     fun isReindeerStart() = value == 'S'
     fun isEnd() = value == 'E'
     fun isWall() = value == '#'
-    fun isTraversable() = value == '.' || isReindeerStart()
+    fun isTraversable() = value == '.' || isReindeerStart() || isEnd()
 }
