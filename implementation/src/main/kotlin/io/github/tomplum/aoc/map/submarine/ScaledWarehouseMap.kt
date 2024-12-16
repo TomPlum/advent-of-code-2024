@@ -52,47 +52,56 @@ class ScaledWarehouseMap(data: List<String>): AdventMap2D<WarehouseTile>(), Ware
     override fun getBoxes() = filterTiles { it.isObstacle() }
 
     override fun moveObstacle(robotPosition: Point2D, direction: Direction): Boolean {
-        var hasMovedBoxes = false
-        var nextPos = robotPosition.shift(direction)
-        val boxes = mutableListOf<Pair<Point2D, Point2D>>()
+        val firstBoxPosition = robotPosition.shift(direction)
+        val firstBoxPieceTile = getTile(firstBoxPosition, WarehouseTile('?'))
 
-        while(!hasMovedBoxes) {
-            val nextTile = getTile(nextPos, WarehouseTile('?'))
-
-            if (nextTile.isEmpty()) {
-                // Other obstacles in the line get shifted one
-                boxes.forEach { (leftPos, rightPos) ->
-                    addTile(leftPos, WarehouseTile('.'))
-                    addTile(rightPos, WarehouseTile('.'))
-                }
-
-                boxes.forEach { (leftPos, rightPos) ->
-                    addTile(leftPos.shift(direction), WarehouseTile('['))
-                    addTile(rightPos.shift(direction), WarehouseTile(']'))
-                }
-
-                hasMovedBoxes = true
-            } else if (nextTile.isWall()) {
-                break
-            } else if (nextTile.isBox()) {
-                val box = nextPos to nextPos.shift(direction)
-                val boxPositions = findBoxStacks(setOf(box), direction)
-                boxes.addAll(boxPositions.windowed(2) { (left, right) -> left to right })
-                nextPos = nextPos.shift(direction)
+        val firstBoxSecondPosition = if (direction == Direction.UP || direction == Direction.DOWN) {
+            if (firstBoxPieceTile.isBoxStart()) {
+                firstBoxPosition.shift(Direction.RIGHT)
+            } else {
+                firstBoxPosition.shift(Direction.LEFT)
+            }
+        } else {
+            if (firstBoxPieceTile.isBoxStart()) {
+                firstBoxPosition.shift(Direction.RIGHT)
+            } else {
+                firstBoxPosition.shift(Direction.LEFT)
             }
         }
+        val firstBoxSecondPieceTile = getTile(firstBoxSecondPosition, WarehouseTile('?'))
 
-        return hasMovedBoxes
+        val boxPositions = findBoxStacks(
+            mapOf(
+                firstBoxPosition to firstBoxPieceTile.value,
+                firstBoxSecondPosition to firstBoxSecondPieceTile.value
+            ),
+            direction
+        )
+
+        if (boxPositions.isEmpty()) {
+            return false
+        }
+
+
+        boxPositions.forEach { (pos) ->
+            addTile(pos, WarehouseTile('.'))
+        }
+
+        boxPositions.forEach { (pos, tileValue) ->
+            addTile(pos.shift(direction), WarehouseTile(tileValue))
+        }
+
+        return true
     }
 
-    private fun findBoxStacks(boxPositions: Set<Pair<Point2D, Point2D>>, direction: Direction): Set<Point2D> {
+    private fun findBoxStacks(boxPositions: Map<Point2D, Char>, direction: Direction): Map<Point2D, Char> {
         if (direction == Direction.LEFT || direction == Direction.RIGHT) {
-            val firstBox = boxPositions.first()
-            val movableBoxPositions = mutableSetOf(firstBox.first, firstBox.second)
+            val movableBoxPositions = mutableMapOf<Point2D, Char>()
+            boxPositions.entries.forEach { movableBoxPositions[it.key] = it.value }
 
-            var currentPosition = firstBox.second
+            var currentPosition = boxPositions.keys.first()
 
-            while(getTile(currentPosition, WarehouseTile('?')).isObstacle()) {
+            while(getTile(currentPosition, WarehouseTile('?')).isBox()) {
                 val nextPosition = currentPosition.shift(direction)
                 val nextTile = getTile(nextPosition, WarehouseTile('?'))
 
@@ -101,40 +110,39 @@ class ScaledWarehouseMap(data: List<String>): AdventMap2D<WarehouseTile>(), Ware
                 }
 
                 if (nextTile.isObstacle()) {
-                    movableBoxPositions.add(nextPosition)
+                    movableBoxPositions[nextPosition] = nextTile.value
                 }
 
                 if (nextTile.isWall()) {
-                    return emptySet()
+                    return emptyMap()
                 }
 
                 currentPosition = nextPosition
             }
+
+            return emptyMap()
         }
 
         if (direction == Direction.UP || direction == Direction.DOWN) {
-            val farthestRow = if (direction == Direction.DOWN) boxPositions.maxBy { it.first.y } else boxPositions.minBy { it.first.y }
-            val farthestRowPoints = boxPositions.filter { it.first.y == farthestRow.first.y }.flatMap { listOf(it.first, it.second) }
+            val farthestRow = if (direction == Direction.DOWN) boxPositions.keys.minBy { it.y } else boxPositions.keys.maxBy { it.y }
+            val farthestRowPoints = boxPositions.keys.filter { it.y == farthestRow.y }
             val xRange = farthestRowPoints.minBy { it.x }.x to farthestRowPoints.maxBy { it.x }.x
             val searchRange = (xRange.first - 1)..(xRange.second + 1)
-            val nextRowPositions = searchRange.map { x -> Point2D(x, farthestRow.first.y).shift(direction) }
+            val nextRowPositions = searchRange.map { x -> Point2D(x, farthestRow.y).shift(direction) }
                 .associateWith { getTile(it, WarehouseTile('?')) }
 
             if (nextRowPositions.values.all { it.isEmpty() }) {
-                return nextRowPositions.keys
+                return boxPositions.entries.associate { it.key to it.value }
             }
 
             return if (nextRowPositions.values.any { it.isWall() }) {
-                emptySet()
+                emptyMap()
             } else {
-                val wholeBoxes = mutableSetOf<Pair<Point2D, Point2D>>()
-                nextRowPositions.entries.windowed(2) { (left, right) ->
-                    if (left.value.isBoxStart() && right.value.isBoxEnd()) {
-                        wholeBoxes.add(left.key to right.key)
-                    }
+                val next = nextRowPositions.entries.associate { (position, tile) ->
+                    position to tile.value
                 }
 
-                findBoxStacks(wholeBoxes, direction)
+                findBoxStacks(next + boxPositions, direction)
             }
         }
 

@@ -21,6 +21,13 @@ class WarehouseSimulatorTest {
     }
 
     @Test
+    fun partTwoExampleSmall() {
+        val input = TestInputReader.read<String>("/day15/example-part-2-small.txt")
+        val simulator = WarehouseSimulator(input.value)
+        assertThat(simulator.simulate(scaled = true)).isEqualTo(9021)
+    }
+
+    @Test
     fun partTwoExampleLarge() {
         val input = TestInputReader.read<String>("/day15/example-large.txt")
         val simulator = WarehouseSimulator(input.value)
