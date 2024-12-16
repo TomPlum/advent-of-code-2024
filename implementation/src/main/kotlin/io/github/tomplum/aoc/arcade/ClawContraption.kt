@@ -1,25 +1,8 @@
 package io.github.tomplum.aoc.arcade
 
 import io.github.tomplum.libs.extensions.split
+import io.github.tomplum.libs.math.equation.LinearEquation
 
-/**
- * TODO: Move to math package in libs
- */
-fun solveLinearEquations(a1: Double, b1: Double, c1: Double, a2: Double, b2: Double, c2: Double): Pair<Double, Double>? {
-    val determinant = a1 * b2 - a2 * b1
-
-    if (determinant == 0.0) {
-        return null
-    }
-
-    val determinantX = c1 * b2 - c2 * b1
-    val determinantY = a1 * c2 - a2 * c1
-
-    val x = determinantX / determinant
-    val y = determinantY / determinant
-
-    return x to y
-}
 
 class ClawContraption(list: List<String>) {
     private val machines = list
@@ -30,10 +13,10 @@ class ClawContraption(list: List<String>) {
         val (ax, ay) = machine.aButtonBehaviour
         val (bx, by) = machine.bButtonBehaviour
         val (px, py) = machine.prizeLocation.let { (x, y) -> x + offset to y + offset }
-        val presses  = solveLinearEquations(
+        val presses  = LinearEquation(
             ax.toDouble(), bx.toDouble(), px.toDouble(),
             ay.toDouble(), by.toDouble(), py.toDouble()
-        )
+        ).solve()
 
         if (presses != null && presses.first % 1 == 0.0 && presses.second % 1 == 0.0) {
             presses.first.toLong() * 3 + presses.second.toLong()
