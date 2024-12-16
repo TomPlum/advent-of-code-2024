@@ -17,72 +17,50 @@ class ReindeerMaze(data: List<String>): AdventMap2D<MazeTile>() {
     }
 
     fun calculateLowestPossibleScore(): Int {
-        val (startingPosition) = findTile { it.isReindeerStart() }!!
-        val startingDirection = Direction.RIGHT
-
         return dijkstraShortestPath(
-            startingPositions = listOf(startingPosition to startingDirection),
-            evaluateAdjacency = { currentNode ->
-                val (currentPosition, direction) = currentNode.value
-                val adjacentNodes = mutableListOf<Node<Pair<Point2D, Direction>>>()
-
-                val nextPosition = currentPosition.shift(direction)
-                if (getTile(nextPosition, MazeTile('?')).isTraversable()) {
-                    adjacentNodes.add(Node(nextPosition to direction, 1))
-                }
-
-                val rotations = directions
-                    .filterNot { currentDirection ->
-                        val isSameDirection = currentDirection == direction
-                        val isBacktracking = currentDirection.isOpposite(direction)
-                        isSameDirection || isBacktracking
-                    }
-                    .map { currentDirection ->
-                        Node(currentPosition to currentDirection, 1000)
-                    }
-
-                adjacentNodes.addAll(rotations)
-
-                adjacentNodes
-            },
-            terminates = { currentNode ->
-                getTile(currentNode.value.first, MazeTile('?')).isEnd()
-            }
+            startingPositions = listOf(getStartingPosition()),
+            evaluateAdjacency = { currentNode -> getAdjacentTileCandidates(currentNode) },
+            terminates = getMazePathTerminalCondition()
         )
     }
 
     fun countBestPathTiles(): Int {
-        val (startingPosition) = findTile { it.isReindeerStart() }!!
-        val startingDirection = Direction.RIGHT
-
         return dijkstraAllShortestPaths(
-            startingPositions = listOf(startingPosition to startingDirection),
-            evaluateAdjacency = { currentNode ->
-                val (currentPosition, direction) = currentNode.value
-                val adjacentNodes = mutableListOf<Node<Pair<Point2D, Direction>>>()
-
-                val nextPosition = currentPosition.shift(direction)
-                if (getTile(nextPosition, MazeTile('?')).isTraversable()) {
-                    adjacentNodes.add(Node(nextPosition to direction, 1))
-                }
-
-                val rotations = directions
-                    .filterNot { currentDirection ->
-                        val isSameDirection = currentDirection == direction
-                        val isBacktracking = currentDirection.isOpposite(direction)
-                        isSameDirection || isBacktracking
-                    }
-                    .map { currentDirection ->
-                        Node(currentPosition to currentDirection, 1000)
-                    }
-
-                adjacentNodes.addAll(rotations)
-
-                adjacentNodes
-            },
-            terminates = { currentNode ->
-                getTile(currentNode.value.first, MazeTile('?')).isEnd()
-            }
+            startingPositions = listOf(getStartingPosition()),
+            evaluateAdjacency = { currentNode -> getAdjacentTileCandidates(currentNode) },
+            terminates = getMazePathTerminalCondition()
         ).shortestPaths.flatten().map { (pos) -> pos }.distinct().count()
+    }
+
+    private fun getMazePathTerminalCondition() = { currentNode: Node<Pair<Point2D, Direction>> ->
+        getTile(currentNode.value.first, MazeTile('?')).isEnd()
+    }
+
+    private fun getAdjacentTileCandidates(currentNode: Node<Pair<Point2D, Direction>>): MutableList<Node<Pair<Point2D, Direction>>> {
+        val (currentPosition, direction) = currentNode.value
+        val adjacentNodes = mutableListOf<Node<Pair<Point2D, Direction>>>()
+
+        val nextPosition = currentPosition.shift(direction)
+        if (getTile(nextPosition, MazeTile('?')).isTraversable()) {
+            adjacentNodes.add(Node(nextPosition to direction, 1))
+        }
+
+        val rotations = directions
+            .filterNot { currentDirection ->
+                val isSameDirection = currentDirection == direction
+                val isBacktracking = currentDirection.isOpposite(direction)
+                isSameDirection || isBacktracking
+            }
+            .map { currentDirection ->
+                Node(currentPosition to currentDirection, 1000)
+            }
+
+        adjacentNodes.addAll(rotations)
+
+        return adjacentNodes
+    }
+
+    private fun getStartingPosition(): Pair<Point2D, Direction> {
+        return findTile { it.isReindeerStart() }!!.first to Direction.RIGHT
     }
 }
