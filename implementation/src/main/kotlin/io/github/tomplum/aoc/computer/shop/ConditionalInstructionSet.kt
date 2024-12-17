@@ -1,4 +1,4 @@
-package io.github.tomplum.aoc.computer
+package io.github.tomplum.aoc.computer.shop
 
 class ConditionalInstructionSet: InstructionSet {
     override fun apply(memory: String): Int {

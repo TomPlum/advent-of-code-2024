@@ -1,4 +1,4 @@
-package io.github.tomplum.aoc.computer
+package io.github.tomplum.aoc.computer.shop
 
 import io.github.tomplum.libs.extensions.product
 
